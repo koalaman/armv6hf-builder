@@ -1,0 +1,5 @@
+remote-repo: hackage.haskell.org:http://hackage.haskell.org/packages/archive
+remote-repo-cache: /root/.cabal/packages
+program-default-options
+  gcc-options: -Os
+  ghc-options: -optc-Os -optlo-Os

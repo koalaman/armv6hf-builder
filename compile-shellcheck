@@ -1,0 +1,21 @@
+#!/bin/bash -xe
+
+# We just need Paths_ShellCheck. However, cabal spends 5+ minutes
+# compiling that in an armv7 emulator. Just stop it after a short
+# bit and hope it's done.
+if !  [[ -e ./dist/build/autogen/Paths_ShellCheck.hs ]]
+then
+	time ( ulimit -t 30; cabal build Paths_ShellCheck ) || true
+fi
+# Ensure that the required file was generated.
+[[ -e ./dist/build/autogen/Paths_ShellCheck.hs ]]
+
+# Now finally we can build the real thing.
+time ghc -optl-static -optl-pthread -isrc -idist/build/autogen --make shellcheck -optlo-Os -optc-Os -v
+strip --strip-all shellcheck
+
+shopt -s globstar
+rm -rf dist src/**/*.{hi,o} || true
+
+# Verify that it runs
+./shellcheck --version
