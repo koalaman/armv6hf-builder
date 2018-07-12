@@ -11,7 +11,7 @@ fi
 [[ -e ./dist/build/autogen/Paths_ShellCheck.hs ]]
 
 # Now finally we can build the real thing.
-time ghc -optl-static -optl-pthread -isrc -idist/build/autogen --make shellcheck -optlo-Os -optc-Os -v
+time ghc -optl-static -optl-pthread -isrc -idist/build/autogen --make shellcheck -optlo-Os -optc-Os -v -split-sections -optc-Wl,--gc-sections
 strip --strip-all shellcheck
 
 shopt -s globstar
