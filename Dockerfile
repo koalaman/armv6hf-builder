@@ -4,7 +4,8 @@
 # that was way easier than trying to build a functioning armv6hf
 # cross-compiler.
 
-FROM resin/rpi-raspbian:stretch
+#FROM resin/rpi-raspbian:stretch
+FROM balenalib/raspberry-pi-debian:stretch
 RUN ["cross-build-start"]
 ENTRYPOINT ["/bin/sh"]
 WORKDIR /mnt
@@ -19,5 +20,7 @@ COPY cabal-config /root/.cabal/config
 # Emulated compilation is very slow. Precompile dependencies.
 RUN cabal update
 RUN cabal install aeson bytestring containers mtl parsec regex-tdfa
+RUN cabal install filepath directory
+RUN cabal install Diff
 
 COPY compile-shellcheck /usr/bin/
